@@ -388,12 +388,13 @@ public class EditorDataGraph
 		foreach (var e in _clickEvents)
 			e(ClickPoint.x, ClickPoint.y);
 	}
+
 	public void ShiftFrameRight()
 	{
 		float x = _timeHistory.Find(t => t > ClickPoint.x);
 
-		if (x <= 0)
-			x = CoordTransformToChartForX(MaxX);
+		if (x <= CoordTransformToChartForX(MinX))
+			x = _timeHistory.Last();
 
         ClickPoint.x = x;
 		foreach (var e in _clickEvents)
@@ -446,7 +447,6 @@ public class EditorDataGraph
 
 	private void OnMouseDrag()
 	{
-		// Handle MouseDown events
 		if (Event.current.type == EventType.MouseDrag)
 		{
 			if (_rect.Contains(Event.current.mousePosition))
@@ -467,7 +467,6 @@ public class EditorDataGraph
 
 	private void OnMouseDown()
     {
-		// Handle MouseDown events
 		if (Event.current.type == EventType.MouseDown)
 		{
 			if (_rect.Contains(Event.current.mousePosition))
@@ -490,8 +489,6 @@ public class EditorDataGraph
     {
 		if (Event.current.type == EventType.Repaint)
         {
-			//DrawRect(minX, minY, maxX, maxY, Colors.Background, Colors.Outline);
-			
 			DrawRect(MinX, MinY, MaxX, MaxY, Colors.Background, Colors.Outline);
 			DrawGridLines();
 			DrawLines();
@@ -548,27 +545,28 @@ public class EditorDataGraph
 		Rect maxYRect = new Rect(CoordTransformToGraph(MinX, MaxY), new Vector2(50.0f, 30.0f));
 		GUI.Label(maxYRect, MaxY.ToString());
 	}
+
 	private void DrawLines()
 	{
 		// Vertical lines
 		foreach (var line in _linesX)
 		{
-			DrawLine(line.Position, MinY, line.Position, MaxY, line.Color, 2);
+			DrawLine(line.Position, MinY, line.Position, MaxY, line.Color, 4);
 		}
 		// Horizontal lines
 		foreach (var line in _linesY)
 		{
-			DrawLine(MinX, line.Position, MaxX, line.Position, line.Color, 2);
+			DrawLine(MinX, line.Position, MaxX, line.Position, line.Color, 4);
 		}
 		// Vertical lines
 		foreach (var line in _linesXDotted)
 		{
-			DrawDottedLine(line.Position, MinY, line.Position, MaxY, line.Color, 2);
+			DrawDottedLine(line.Position, MinY, line.Position, MaxY, line.Color, 4);
 		}
 		// Horizontal lines
 		foreach (var line in _linesYDotted)
 		{
-			DrawDottedLine(MinX, line.Position, MaxX, line.Position, line.Color, 2);
+			DrawDottedLine(MinX, line.Position, MaxX, line.Position, line.Color, 4);
 		}
 	}
 
