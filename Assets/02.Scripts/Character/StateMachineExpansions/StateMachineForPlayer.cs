@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class StateMachineForPlayer : StateMachineBase
 {
     public enum StateTypes
@@ -37,7 +38,8 @@ public class StateMachineForPlayer : StateMachineBase
             _isInterating = value;
         }
     }
-    public bool IsInteratable
+
+    public bool IsInteractable
     {
         get
         {

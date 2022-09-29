@@ -28,15 +28,15 @@ public class StateIdleForPlayer : StateBase
 
         switch (Command)
         {
-            case Commands.Idle:
+            case IState.Commands.Idle:
                 break;
-            case Commands.Prepare:
+            case IState.Commands.Prepare:
                 {
                     _animationManager.Play("Move");
                     MoveNext();
                 }
                 break;
-            case Commands.Casting:
+            case IState.Commands.Casting:
                 {
                     float currentMoveBlend = _animationManager.GetFloat("MoveBlend");
                     if (currentMoveBlend <= 0.00f)
@@ -49,20 +49,20 @@ public class StateIdleForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.OnAction:
+            case IState.Commands.OnAction:
                 MoveNext();
                 break;
-            case Commands.Finish:
+            case IState.Commands.Finish:
                 MoveNext();
                 break;
-            case Commands.WaitUntilFinished:
+            case IState.Commands.WaitUntilFinished:
                 MoveNext();
                 break;
-            case Commands.Finished:
+            case IState.Commands.Finished:
                 break;
-            case Commands.Error:
+            case IState.Commands.Error:
                 break;
-            case Commands.WaitUntilErrorCleared:
+            case IState.Commands.WaitUntilErrorCleared:
                 break;
             default:
                 break;

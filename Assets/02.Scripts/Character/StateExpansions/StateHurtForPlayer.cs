@@ -35,19 +35,19 @@ public class StateHurtForPlayer : StateBase
 
         switch (Command)
         {
-            case Commands.Idle:
+            case IState.Commands.Idle:
                 break;
-            case Commands.Prepare:
+            case IState.Commands.Prepare:
                 {
                     _animationManager.Play("Hurt");
                     _animationTimer = _animationTime;
                     MoveNext();
                 }
                 break;
-            case Commands.Casting:
+            case IState.Commands.Casting:
                 MoveNext();
                 break;
-            case Commands.OnAction:
+            case IState.Commands.OnAction:
                 {
                     if (_animationTimer < 0)
                         MoveNext();
@@ -55,18 +55,18 @@ public class StateHurtForPlayer : StateBase
                         _animationTimer -= Time.deltaTime;
                 }                
                 break;
-            case Commands.Finish:
+            case IState.Commands.Finish:
                 MoveNext();
                 break;
-            case Commands.WaitUntilFinished:
+            case IState.Commands.WaitUntilFinished:
                 MoveNext();
                 break;
-            case Commands.Finished:
+            case IState.Commands.Finished:
                 nextStateType = StateMachineForPlayer.StateTypes.Move;
                 break;
-            case Commands.Error:
+            case IState.Commands.Error:
                 break;
-            case Commands.WaitUntilErrorCleared:
+            case IState.Commands.WaitUntilErrorCleared:
                 break;
             default:
                 break;

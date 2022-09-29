@@ -8,9 +8,9 @@ public abstract class StateMachineBase : MonoBehaviour
 {
     public bool IsReady;
     public dynamic StateType;
-    protected Dictionary<dynamic, StateBase> States = new Dictionary<dynamic, StateBase>();
-    protected StateBase Current;
-    public StateBase.Commands CurrentCommand => Current.Command;
+    protected Dictionary<dynamic, IState> States = new Dictionary<dynamic, IState>();
+    protected IState Current;
+    public IState.Commands CurrentCommand => Current.Command;
 
     public virtual void ChangeState(dynamic newStateType)
     {
@@ -76,7 +76,7 @@ public abstract class StateMachineBase : MonoBehaviour
     }
 
     #region For debugging
-    public StateBase GetCurrentState(out dynamic stateType)
+    public IState GetCurrentState(out dynamic stateType)
     {
         stateType = StateType;
         return Current;

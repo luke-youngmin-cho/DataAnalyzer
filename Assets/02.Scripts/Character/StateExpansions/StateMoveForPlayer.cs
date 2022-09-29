@@ -30,15 +30,15 @@ public class StateMoveForPlayer : StateBase
 
         switch (Command)
         {
-            case Commands.Idle:
+            case IState.Commands.Idle:
                 break;
-            case Commands.Prepare:
+            case IState.Commands.Prepare:
                 {
                     _animationManager.SetBool("DoMove", true);
                     MoveNext();
                 }
                 break;
-            case Commands.WaitUntilPrepared:
+            case IState.Commands.WaitUntilPrepared:
                 {
                     if (_animationManager.GetBool("OnMove"))
                     {
@@ -47,12 +47,12 @@ public class StateMoveForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.Casting:
+            case IState.Commands.Casting:
                 {                    
                     MoveNext();
                 }
                 break;
-            case Commands.OnAction:
+            case IState.Commands.OnAction:
                 {
                     _animationManager.SetFloat("MoveBlend", _movement.Speed / PlayerInfo.MoveSpeedMax);
 
@@ -60,17 +60,17 @@ public class StateMoveForPlayer : StateBase
                         nextStateType = StateMachineForPlayer.StateTypes.Fall;
                 }
                 break;
-            case Commands.Finish:
+            case IState.Commands.Finish:
                 MoveNext();
                 break;
-            case Commands.WaitUntilFinished:
+            case IState.Commands.WaitUntilFinished:
                 MoveNext();
                 break;
-            case Commands.Finished:
+            case IState.Commands.Finished:
                 break;
-            case Commands.Error:
+            case IState.Commands.Error:
                 break;
-            case Commands.WaitUntilErrorCleared:
+            case IState.Commands.WaitUntilErrorCleared:
                 break;
             default:
                 break;

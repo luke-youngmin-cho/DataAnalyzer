@@ -4,38 +4,24 @@ using System.Collections;
 /// <summary>
 /// Base for state machine's sub state
 /// </summary>
-public abstract class StateBase
+public abstract class StateBase : IState
 {
     public bool IsBusy
     {
-        get => (Command > Commands.Idle || Command < Commands.Finished) ? true : false;
+        get => (Command > IState.Commands.Idle || Command < IState.Commands.Finished) ? true : false;
     }
 
     public bool IsFinished
     {
-        get => Command == Commands.Finished;
+        get => Command == IState.Commands.Finished;
     }
 
     public bool IsError
     {
-        get => Command >= Commands.Error;
+        get => Command >= IState.Commands.Error;
     }
 
-    public enum Commands
-    {
-        Idle,
-        Prepare,
-        WaitUntilPrepared,
-        Casting,
-        OnAction,
-        Finish,
-        WaitUntilFinished,
-        Finished,
-        Error,
-        WaitUntilErrorCleared
-    }
-
-    public Commands Command { get; protected set; }
+    public IState.Commands Command { get; protected set; }
     protected dynamic StateType = null;
     protected StateMachineBase Machine;
     
@@ -48,39 +34,39 @@ public abstract class StateBase
 
     
     public abstract bool Available { get; }
-    public virtual void Active() => Command = Commands.Prepare;
-    public virtual void Deactive() => Command = Commands.Idle;
+    public virtual void Active() => Command = IState.Commands.Prepare;
+    public virtual void Deactive() => Command = IState.Commands.Idle;
     public virtual dynamic Update()
     {
         dynamic nextStateType = StateType;
         switch (Command)
         {
-            case Commands.Idle:
+            case IState.Commands.Idle:
                 break;
-            case Commands.Prepare:
+            case IState.Commands.Prepare:
                 MoveNext();
                 break;
-            case Commands.WaitUntilPrepared:
+            case IState.Commands.WaitUntilPrepared:
                 MoveNext();
                 break;
-            case Commands.Casting:
+            case IState.Commands.Casting:
                 MoveNext();
                 break;
-            case Commands.OnAction:
+            case IState.Commands.OnAction:
                 MoveNext();
                 break;
-            case Commands.Finish:
+            case IState.Commands.Finish:
                 MoveNext();
                 break;
-            case Commands.WaitUntilFinished:
+            case IState.Commands.WaitUntilFinished:
                 MoveNext();
                 break;
-            case Commands.Finished:
+            case IState.Commands.Finished:
                 break;
-            case Commands.Error:
+            case IState.Commands.Error:
                 MoveNext();
                 break;
-            case Commands.WaitUntilErrorCleared:
+            case IState.Commands.WaitUntilErrorCleared:
                 break;
             default:
                 break;
@@ -91,23 +77,23 @@ public abstract class StateBase
     {
         switch (Command)
         {
-            case Commands.Idle:
+            case IState.Commands.Idle:
                 break;
-            case Commands.Prepare:
+            case IState.Commands.Prepare:
                 break;
-            case Commands.Casting:
+            case IState.Commands.Casting:
                 break;
-            case Commands.OnAction:
+            case IState.Commands.OnAction:
                 break;
-            case Commands.Finish:
+            case IState.Commands.Finish:
                 break;
-            case Commands.WaitUntilFinished:
+            case IState.Commands.WaitUntilFinished:
                 break;
-            case Commands.Finished:
+            case IState.Commands.Finished:
                 break;
-            case Commands.Error:
+            case IState.Commands.Error:
                 break;
-            case Commands.WaitUntilErrorCleared:
+            case IState.Commands.WaitUntilErrorCleared:
                 break;
             default:
                 break;

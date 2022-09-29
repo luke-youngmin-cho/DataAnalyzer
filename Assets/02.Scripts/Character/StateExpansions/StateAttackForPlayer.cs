@@ -22,9 +22,7 @@ public class StateAttackForPlayer : StateBase
 
     public override bool Available => _animationManager.IsPreviousAnimationFinished &&
                                       (Machine.StateType == StateMachineForPlayer.StateTypes.Idle ||
-                                       Machine.StateType == StateMachineForPlayer.StateTypes.Move ||
-                                       Machine.StateType == StateMachineForPlayer.StateTypes.Jump ||
-                                       Machine.StateType == StateMachineForPlayer.StateTypes.Fall);   
+                                       Machine.StateType == StateMachineForPlayer.StateTypes.Move);   
 
     public override void Active()
     {
@@ -47,9 +45,9 @@ public class StateAttackForPlayer : StateBase
 
         switch (Command)
         {
-            case Commands.Idle:
+            case IState.Commands.Idle:
                 break;
-            case Commands.Prepare:
+            case IState.Commands.Prepare:
                 {
                     _comboCount = 0;
                     _animationManager.SetInt("ComboCount", _comboCount);
@@ -58,7 +56,7 @@ public class StateAttackForPlayer : StateBase
                     MoveNext();
                 }
                 break;
-            case Commands.WaitUntilPrepared:
+            case IState.Commands.WaitUntilPrepared:
                 {
                     if (_animationManager.IsPreviousAnimationFinished)
                     {
@@ -66,7 +64,7 @@ public class StateAttackForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.Casting:
+            case IState.Commands.Casting:
                 {
                     if (_animationManager.IsComboAvailable)
                     {
@@ -86,7 +84,7 @@ public class StateAttackForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.OnAction:
+            case IState.Commands.OnAction:
                 {
                     // animation finished
                     if (_animationManager.GetCurrentNormalizedTime() > 0.9f)
@@ -108,26 +106,26 @@ public class StateAttackForPlayer : StateBase
                         else
                         {   
                             _animationManager.DisableCombo();
-                            Command = Commands.WaitUntilPrepared;
+                            Command = IState.Commands.WaitUntilPrepared;
                         }
                     }
                 }
                 break;
-            case Commands.Finish:
+            case IState.Commands.Finish:
                 {
                     _animationManager.SetBool("FinishCombo", false);
                     MoveNext();
                 }
                 break;
-            case Commands.WaitUntilFinished:
+            case IState.Commands.WaitUntilFinished:
                 MoveNext();
                 break;
-            case Commands.Finished:
+            case IState.Commands.Finished:
                 nextStateType = StateMachineForPlayer.StateTypes.Move;
                 break;
-            case Commands.Error:
+            case IState.Commands.Error:
                 break;
-            case Commands.WaitUntilErrorCleared:
+            case IState.Commands.WaitUntilErrorCleared:
                 break;
             default:
                 break;

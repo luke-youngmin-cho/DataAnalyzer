@@ -47,15 +47,15 @@ public class StateJumpForPlayer : StateBase
         dynamic nextStateType = StateType;
         switch (Command)
         {
-            case Commands.Idle:
+            case IState.Commands.Idle:
                 break;
-            case Commands.Prepare:
+            case IState.Commands.Prepare:
                 {
                     _animationManager.SetBool("DoJump", true);
                     MoveNext();
                 }
                 break;
-            case Commands.WaitUntilPrepared:
+            case IState.Commands.WaitUntilPrepared:
                 {
                     if (_animationManager.GetBool("OnJump"))
                     {
@@ -67,7 +67,7 @@ public class StateJumpForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.Casting:
+            case IState.Commands.Casting:
                 {
                     if (_groundDetector.IsDetected == false)
                     {
@@ -75,7 +75,7 @@ public class StateJumpForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.OnAction:
+            case IState.Commands.OnAction:
                 {
                     if (_rigidbody.velocity.y < 0 ||
                         _groundDetector.IsDetected)
@@ -84,17 +84,17 @@ public class StateJumpForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.Finish:
+            case IState.Commands.Finish:
                 {
                     MoveNext();                    
                 }
                 break;
-            case Commands.WaitUntilFinished:
+            case IState.Commands.WaitUntilFinished:
                 {
                     MoveNext();
                 }
                 break;
-            case Commands.Finished:
+            case IState.Commands.Finished:
                 {
                     if (_groundDetector.IsDetected)
                     {
@@ -106,9 +106,9 @@ public class StateJumpForPlayer : StateBase
                     }
                 }
                 break;
-            case Commands.Error:
+            case IState.Commands.Error:
                 break;
-            case Commands.WaitUntilErrorCleared:
+            case IState.Commands.WaitUntilErrorCleared:
                 break;
             default:
                 break;
