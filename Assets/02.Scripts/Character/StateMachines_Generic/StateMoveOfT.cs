@@ -1,22 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMoveForPlayer : StateBase
+public class StateMove<T> : StateBase<T> where T : Enum
 {
     private AnimationManagerBase _animationManager;
     private Movement _movement;
-    private GroundDetector _groundDetector;
-    public StateMoveForPlayer(StateMachineForPlayer.StateTypes stateType,
-                              StateMachineBase machine) 
-        : base(stateType, machine)
+    private CharacterBase _character;
+
+    public StateMove(T stateType, T[] nextTargets, T CanExecuteConditionMask, StateMachineBase<T> machine) 
+        : base(stateType, nextTargets, CanExecuteConditionMask, machine)
     {
         _animationManager = machine.GetComponent<AnimationManagerBase>();
         _movement = machine.GetComponent<Movement>();
-        _groundDetector = machine.GetComponentInChildren<GroundDetector>();
+        _character = machine.GetComponent<CharacterBase>();
     }
-
-    public override bool Available => _animationManager.IsPreviousAnimationFinished;
 
     public override void Active()
     {
@@ -24,9 +23,9 @@ public class StateMoveForPlayer : StateBase
         _movement.IsMovable = true;
     }
 
-    public override dynamic Update()
+    public override T Update()
     {
-        StateMachineForPlayer.StateTypes nextStateType = StateType;
+        T nextStateType = StateType;
 
         switch (Command)
         {
@@ -48,16 +47,13 @@ public class StateMoveForPlayer : StateBase
                 }
                 break;
             case IState.Commands.Casting:
-                {                    
+                {
                     MoveNext();
                 }
                 break;
             case IState.Commands.OnAction:
                 {
-                    _animationManager.SetFloat("MoveBlend", _movement.Speed / PlayerInfo.MoveSpeedMax);
-
-                    if (_groundDetector.IsDetected == false)
-                        nextStateType = StateMachineForPlayer.StateTypes.Fall;
+                    _animationManager.SetFloat("MoveBlend", _movement.Speed / _character.MoveSpeedMax);
                 }
                 break;
             case IState.Commands.Finish:
@@ -67,6 +63,16 @@ public class StateMoveForPlayer : StateBase
                 MoveNext();
                 break;
             case IState.Commands.Finished:
+                {
+                    for (int i = 0; i < FinishConditions.Length; i++)
+                    {
+                        if (FinishConditions[i]())
+                        {
+                            nextStateType = NextTargets[i];
+                            break;
+                        }
+                    }
+                }
                 break;
             case IState.Commands.Error:
                 break;
@@ -77,4 +83,5 @@ public class StateMoveForPlayer : StateBase
         }
         return nextStateType;
     }
+
 }

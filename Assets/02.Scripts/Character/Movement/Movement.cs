@@ -31,17 +31,17 @@ public class Movement : MonoBehaviour
             if (IsMoving)
             {
                 if (Input.GetKey(KeyCode.LeftShift))
-                    tmp = PlayerInfo.DashSpeed * SpeedGain;
+                    tmp = _character.DashSpeed * SpeedGain;
                 else
-                    tmp = PlayerInfo.MoveSpeed * SpeedGain;
+                    tmp = _character.MoveSpeed * SpeedGain;
             }
             else
             {
                 tmp = 0.0f;
             }
 
-            if (tmp > PlayerInfo.MoveSpeedMax)
-                tmp = PlayerInfo.MoveSpeedMax;
+            if (tmp > _character.MoveSpeedMax)
+                tmp = _character.MoveSpeedMax;
 
             return tmp;
         }
@@ -57,6 +57,7 @@ public class Movement : MonoBehaviour
     private Camera _camera;
     [SerializeField] private LayerMask _groundLayer;
     private StateMachineForPlayer _machine;
+    private CharacterBase _character;
     private float _positionWindow = 0.1f;
     public void Stop()
     {
@@ -74,6 +75,7 @@ public class Movement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _machine = GetComponent<StateMachineForPlayer>();
+        _character = GetComponent<CharacterBase>();
         _camera = Camera.main;
     }
 

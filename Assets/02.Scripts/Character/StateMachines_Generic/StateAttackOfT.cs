@@ -1,8 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateAttackForPlayer : StateBase
+public class StateAttack<T> : StateBase<T> where T : Enum
 {
     private AnimationManagerBase _animationManager;
     private Movement _movement;
@@ -10,19 +11,15 @@ public class StateAttackForPlayer : StateBase
     private Rigidbody _rb;
     private bool _onCombo;
     private int _comboCount;
-    public StateAttackForPlayer(StateMachineForPlayer.StateTypes stateType,
-                                StateMachineBase machine)
-        : base(stateType, machine)
+
+    public StateAttack(T stateType, T[] nextTargets, T canExecuteConditionMask, StateMachineBase<T> machine)
+        : base(stateType, nextTargets, canExecuteConditionMask, machine)
     {
         _animationManager = machine.GetComponent<AnimationManagerBase>();
         _movement = machine.GetComponent<Movement>();
         _character = machine.GetComponent<CharacterBase>();
         _rb = machine.GetComponent<Rigidbody>();
     }
-
-    public override bool Available => _animationManager.IsPreviousAnimationFinished &&
-                                      (Machine.StateType == StateMachineForPlayer.StateTypes.Idle ||
-                                       Machine.StateType == StateMachineForPlayer.StateTypes.Move);   
 
     public override void Active()
     {
@@ -39,9 +36,9 @@ public class StateAttackForPlayer : StateBase
         _animationManager.DisableCombo();
     }
 
-    public override dynamic Update()
+    public override T Update()
     {
-        dynamic nextStateType = StateType;
+        T nextStateType = StateType;
 
         switch (Command)
         {
@@ -60,7 +57,7 @@ public class StateAttackForPlayer : StateBase
                 {
                     if (_animationManager.IsPreviousAnimationFinished)
                     {
-                        MoveNext();   
+                        MoveNext();
                     }
                 }
                 break;
@@ -87,7 +84,8 @@ public class StateAttackForPlayer : StateBase
             case IState.Commands.OnAction:
                 {
                     // animation finished
-                    if (_animationManager.GetCurrentNormalizedTime() > 0.9f)
+                    if (_animationManager.IsPreviousAnimationFinished &&
+                        _animationManager.GetCurrentNormalizedTime() > 0.9f)
                     {
                         MoveNext();
                     }
@@ -104,9 +102,9 @@ public class StateAttackForPlayer : StateBase
                             }
                         }
                         else
-                        {   
+                        {
                             _animationManager.DisableCombo();
-                            Command = IState.Commands.WaitUntilPrepared;
+                            Command = IState<T>.Commands.WaitUntilPrepared;
                         }
                     }
                 }
@@ -121,7 +119,16 @@ public class StateAttackForPlayer : StateBase
                 MoveNext();
                 break;
             case IState.Commands.Finished:
-                nextStateType = StateMachineForPlayer.StateTypes.Move;
+                {
+                    for (int i = 0; i < FinishConditions.Length; i++)
+                    {
+                        if (FinishConditions[i]())
+                        {
+                            nextStateType = NextTargets[i];
+                            break;
+                        }
+                    }
+                }
                 break;
             case IState.Commands.Error:
                 break;

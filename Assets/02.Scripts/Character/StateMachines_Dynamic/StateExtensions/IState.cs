@@ -1,4 +1,7 @@
-﻿public interface IState
+﻿using System.Windows.Input;
+using System;
+
+public interface IState
 {
     public enum Commands
     {

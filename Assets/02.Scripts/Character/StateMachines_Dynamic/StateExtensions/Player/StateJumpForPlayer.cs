@@ -7,6 +7,7 @@ public class StateJumpForPlayer : StateBase
     private Movement _movement;
     private GroundDetector _groundDetector;
     private AnimationManagerBase _animationManager;
+    private CharacterBase _character;
     private Rigidbody _rigidbody;
     
     public StateJumpForPlayer(StateMachineForPlayer.StateTypes stateType,
@@ -16,6 +17,7 @@ public class StateJumpForPlayer : StateBase
         _movement = machine.GetComponent<Movement>();
         _groundDetector = machine.GetComponentInChildren<GroundDetector>();
         _animationManager = machine.GetComponent<AnimationManagerBase>();
+        _character = machine.GetComponent<CharacterBase>();
         _rigidbody = machine.GetComponent<Rigidbody>();
     }
 
@@ -61,7 +63,7 @@ public class StateJumpForPlayer : StateBase
                     {
                         _animationManager.SetBool("DoJump", false);
                         _movement.ResetVelocityY();
-                        _rigidbody.AddForce(force: Vector3.up * PlayerInfo.JumpForce,
+                        _rigidbody.AddForce(force: Vector3.up * _character.JumpForce,
                                             mode: ForceMode.VelocityChange);
                         MoveNext();
                     }

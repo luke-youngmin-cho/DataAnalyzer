@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
+
 public class ShortCutSettings
 {
-    
-
     public static void SetUpDefaultStateMachineSettings(StateMachineBase stateMachine)
     {
         InputHandler.SetAction(
