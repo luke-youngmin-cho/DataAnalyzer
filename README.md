@@ -16,3 +16,18 @@ Unity custom editor test for data analyzer
 
 
 ![SampleCapture](SampleCapture.png)
+
+## Additional implementations for testing :
+
+### Character FSM 
+* There're 2 versions. Generic concept & Dynamic concept.
+* Generic concept below 
+
+![Character_FSM_Concept](Character_FSM_Concept.jpg)
+
+
+### Inventory System
+* Inventory System of MVVM pattern.
+
+![Inventory_MVVM_Concept](Inventory_MVVM_Concept.jpg)
+
