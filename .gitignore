@@ -17,9 +17,11 @@
 /[Aa]ssets/04.Materials/
 /[Aa]ssets/06.Models/
 /[Aa]ssets/07.Animations/
+/[Aa]ssets/08.Textures/
 /[Aa]ssets/Settings/
+/[Aa]ssets/TextMesh Pro/
 /[Aa]ssets/TutorialInfo
-
+/[Aa]ssets/Resources/
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/

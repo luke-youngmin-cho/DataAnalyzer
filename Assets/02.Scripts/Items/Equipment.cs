@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-public class Equipment : MonoBehaviour
+public class Equipment : Item
 {
-    public int code;
-    public Sprite icon;
-    public string description;
+    public override void Use()
+    {
+        // todo -> equip
+    }
 }
